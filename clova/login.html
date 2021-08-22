@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML Intro</title>
+    <script>
+        function getUrlParams() {     
+            var params = {};  
+            
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, 
+                function(str, key, value) { 
+                    params[key] = value; 
+                }
+            );     
+            
+            return params; 
+        }
+        window.onload = function(){
+            query = getUrlParams();
+            console.log(query);
+            document.getElementById('response_type').value = query.response_type;
+            document.getElementById('client_id').value = query.client_id;
+            document.getElementById('scope').value = query.scope;
+            document.getElementById('redirect_uri').value = query.redirect_uri;
+            document.getElementById('state').value = query.state;
+        }
+    </script>
+  </head>
+  <body>
+    <form action="login" method="post">
+      <div class="container">
+          <input hidden type="text" name="response_type" id="response_type"/>
+          <input hidden type="text" name="client_id" id="client_id"/>
+          <input hidden type="text" name="scope" id="scope"/>
+          <input hidden type="text" name="redirect_uri" id="redirect_uri"/>
+          <input hidden type="text" name="state" id="state"/>
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Enter email" name="email" required />
+
+        <label for="pw"><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="pw"
+          required
+        />
+
+        <button type="submit">Login</button>
+
+    </form>
+  </body>
+</html>
