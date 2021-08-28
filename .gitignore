@@ -116,3 +116,5 @@ dist
 .pnp.*
 key.json
 .DS_Store
+
+secret/mqtt.json
