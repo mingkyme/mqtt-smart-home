@@ -54,85 +54,54 @@ router.post('/token',function(req,res){
 });
 function DiscoverAppliancesRequest(req, res) {
   console.log('Discover');
-  res.send(`
-    {
-        "header": {
-          "messageId": "99f9d8ff-9366-4cab-a90c-b4c7eca0abbe",
-          "name": "DiscoverAppliancesResponse",
-          "namespace": "ClovaHome",
-          "payloadVersion": "1.0"
-        },
-        "payload": {
-          "customCommands": [],
-          "discoveredAppliances": [
-            {
-              "applianceId": "device-001",
-              "manufacturerName": "device-manufacturer-name",
-              "modelName": "스마트 전등",
-              "version": "v1.0",
-              "friendlyName": "거실 전등",
-              "friendlyDescription": "스마트폰으로 제어할 수 있는 전등",
-              "isIr": false,
-              "actions": [
-                "DecrementBrightness",
-                "HealthCheck",
-                "IncrementBrightness",
-                "SetBrightness",
-                "TurnOn",
-                "TurnOff"
-              ],
-              "applianceTypes": ["LIGHT"],
-              "additionalApplianceDetails": {}
-            },
-            {
-              "applianceId": "device-002",
-              "manufacturerName": "device-manufacturer-name",
-              "modelName": "스마트 플러그",
-              "version": "v1.0",
-              "friendlyName": "부엌 플러그",
-              "friendlyDescription": "에너지를 절약하는 플러그",
-              "isIr": false,
-              "actions": [
-                "HealthCheck",
-                "TurnOn",
-                "TurnOff"
-              ],
-              "applianceTypes": ["SMARTPLUG"],
-              "additionalApplianceDetails": {},
-              "location": "LIVING_ROOM"
-            }
-          ]
-        }
-      }
-    `);
+  let messageId = req.body.header.messageId;
+
+  let resultObject = new Object();
+  resultObject.header = new Object();
+  resultObject.header.messageId = messageId;
+  resultObject.header.name = "smart home";
+  resultObject.header.namespace = "smart home";
+  resultObject.header.payloadVersion = "1.0";
+  resultObject.payload = new Object();
+  resultObject.payload.discoveredAppliances = new Array();
+
+  let switchbot = new Object();
+  switchbot.applianceId = "ESP32-000001";
+  switchbot.manufacturerName = "Arduino";
+  switchbot.modelName = "ESP32";
+  switchbot.friendlyName = "부엌";
+  switchbot.isIr = false;
+  switchbot.actions = ["TurnOn", "TurnOff"];
+  switchbot.applianceTypes = ["SWITCH"];
+  resultObject.payload.discoveredAppliances.push(switchbot);
+
+  res.send(resultObject);
 }
 function TurnOnRequest(req, res) {
   console.log('ON');
-  res.send(`
-    {
-        "header": {
-          "messageId": "4ec35000-88ce-4724-b7e4-7f52050558fd",
-          "name": "TurnOnConfirmation",
-          "namespace": "ClovaHome",
-          "payloadVersion": "1.0"
-        },
-        "payload": {}
-      }
-    `);
+  let applianceId = req.body.payload.appliance.applianceId;
+  let messageId = req.body.header.messageId;
+  
+  let resultObject = new Object();
+  resultObject.header = new Object();
+  resultObject.header.messageId = req.body.header.messageId;
+  resultObject.header.name = "TurnOnConfirmation";
+  resultObject.header.payloadVersion = "1.0";
+  resultObject.payload = new Object();
+  res.send(resultObject);
+    
 }
 function TurnOffRequest(req, res) {
   console.log('OFF');
+  let applianceId = req.body.payload.appliance.applianceId;
+  let messageId = req.body.header.messageId;
 
-  res.send(`
-    {
-        "header": {
-          "messageId": "4ec35000-88ce-4724-b7e4-7f52050558fd",
-          "name": "TurnOffConfirmation",
-          "namespace": "ClovaHome",
-          "payloadVersion": "1.0"
-        },
-        "payload": {}
-      }
-    `);
+  let resultObject = new Object();
+  resultObject.header = new Object();
+  resultObject.header.messageId = req.body.header.messageId;
+  resultObject.header.name = "TurnOffConfirmation";
+  resultObject.header.payloadVersion = "1.0";
+  resultObject.payload = new Object();
+  res.send(resultObject);
 }
 module.exports = router;
