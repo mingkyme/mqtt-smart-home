@@ -81,7 +81,7 @@ function DiscoverAppliancesRequest(req, res) {
 }
 function TurnOnRequest(req, res) {
   console.log('ON');
-  client.publish("iot/kitchen/switch", "OFF");
+  client.publish("iot/kitchen/switch", "ON");
 
   let applianceId = req.body.payload.appliance.applianceId;
   let messageId = req.body.header.messageId;
@@ -97,7 +97,7 @@ function TurnOnRequest(req, res) {
 }
 function TurnOffRequest(req, res) {
   console.log('OFF');
-  client.publish("iot/kitchen/switch", "ON");
+  client.publish("iot/kitchen/switch", "OFF");
 
   let applianceId = req.body.payload.appliance.applianceId;
   let messageId = req.body.header.messageId;
