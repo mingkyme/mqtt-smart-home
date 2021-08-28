@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
+const mqtt = require('mqtt');
+const mqttOption = require('../secret/mqtt.json');
+let client = mqtt.connect(mqttOption);
 router.use(function(req,res,next){
   console.log(req.url);
   next();
@@ -69,7 +71,7 @@ function DiscoverAppliancesRequest(req, res) {
   switchbot.applianceId = "ESP32-000001";
   switchbot.manufacturerName = "Arduino";
   switchbot.modelName = "ESP32";
-  switchbot.friendlyName = "부엌";
+  switchbot.friendlyName = "부엌 불";
   switchbot.isIr = false;
   switchbot.actions = ["TurnOn", "TurnOff"];
   switchbot.applianceTypes = ["SWITCH"];
@@ -79,6 +81,8 @@ function DiscoverAppliancesRequest(req, res) {
 }
 function TurnOnRequest(req, res) {
   console.log('ON');
+  client.publish("iot/kitchen/switch", "ON");
+
   let applianceId = req.body.payload.appliance.applianceId;
   let messageId = req.body.header.messageId;
   
@@ -93,6 +97,8 @@ function TurnOnRequest(req, res) {
 }
 function TurnOffRequest(req, res) {
   console.log('OFF');
+  client.publish("iot/kitchen/switch", "OFF");
+
   let applianceId = req.body.payload.appliance.applianceId;
   let messageId = req.body.header.messageId;
 
